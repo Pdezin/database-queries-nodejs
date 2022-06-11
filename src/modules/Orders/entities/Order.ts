@@ -2,36 +2,31 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
 import { Game } from '../../games/entities/Game';
-import { Order } from '../../Orders/entities/Order';
 
-@Entity('users')
-export class User {
+import { User } from '../../users/entities/User';
+
+@Entity('orders')
+export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  first_name: string;
+  description: string;
 
   @Column()
-  last_name: string;
+  value: number;
 
-  @Column()
-  email: string;
-
-  @ManyToMany(() => Game, (game) => game.users)
-  @JoinTable()
+  @ManyToMany(() => Game, (game) => game.orders)
   games: Game[];
 
-  @OneToMany(() => Order, (order) => order.customerId)
-  orders: Order[];
+  @ManyToOne(() => User, (user) => user.orders)
+  customerId: User;
 
   @CreateDateColumn()
   created_at: Date;

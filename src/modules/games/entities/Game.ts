@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Order } from '../../Orders/entities/Order';
 
 import { User } from '../../users/entities/User';
+import { Genres } from './Genres';
 
 @Entity('games')
 export class Game {
@@ -19,6 +22,12 @@ export class Game {
 
   @ManyToMany(() => User, (user) => user.games)
   users: User[];
+
+  @ManyToOne(() => Genres, (genres) => genres.games)
+  genreId: Genres;
+
+  @ManyToMany(() => Order, (order) => order.games)
+  orders: Order[];
 
   @CreateDateColumn()
   created_at: Date;
